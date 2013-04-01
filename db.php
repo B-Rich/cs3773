@@ -1,8 +1,8 @@
 <?php
 $host="localhost";
 $username='root';  
-$password='jg1093xavi';  
-$db='EHIS_db'; 
+$password='sdhcs29i';  
+$db='EHIS'; 
 
 
 // Connects to MySql database on the "localhost" machine
