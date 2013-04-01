@@ -1,15 +1,17 @@
 <?php
 session_start();
 require_once('db.php');
-include('no_cache.php');
+// the no cache might be needed in case we run into
+// problems with displaying cached pages
+//include('no_cache.php'); 
 if(!isset($_SESSION['user'])){
-		// session not logged in so redirect to login page
-		//header("Status: 200"); //might be needed
-		header("Location: login.php");
+   // session not logged in so redirect to login page
+   //header("Status: 200"); //might be needed
+   header("Location: login.php");
 }else{
-		//session logged 
-		//display the contents of members.php
-		//notice that the closing brace is not until the bottom of the page		
+   //session logged 
+   //display the contents of members.php
+   //notice that the closing brace is not until the bottom of the page		
 ?>
 <html>
 <head> 
