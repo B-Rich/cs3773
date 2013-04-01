@@ -133,7 +133,7 @@ if (isset($_POST['Login'])){
       }
       else
       {
-        $query = "SELECT username,password FROM user
+        $query = "SELECT username,password FROM User
             WHERE username='$user' AND password='$pass' ";
         $result = mysqli_query($conn, $query);
 

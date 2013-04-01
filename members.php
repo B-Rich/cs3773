@@ -22,20 +22,20 @@ if(!isset($_SESSION['user'])){
       // connect to the DB
        $conn = connect_db(); 
       // write the query to be executed
-      $query = "SELECT type FROM user 
+      $query = "SELECT type FROM User 
             WHERE username= '". $_SESSION['user'] ."' ";
       // execute the query and return the results
       $result = mysqli_query($conn, $query);
       // fetch the results into an associative array
       $row = mysqli_fetch_assoc($result);
       
-      if($row['type'] == 'Doctor'){
+      if($row['type'] == 'doctor'){
          echo "<p>I am a doctor</p>";
-      }else if($row['type'] == 'Nurse'){
+      }else if($row['type'] == 'nurse'){
          echo "<p>I am a Nurse</p>";
-      }else if($row['type'] == 'Staff'){
+      }else if($row['type'] == 'receptionist'){
          echo "<p>I am a Staff</p>";
-      }else if($row['type'] == 'Patient'){
+      }else if($row['type'] == 'patient'){
          echo "<p>I am a Patient</p>";
       }else{
          echo "<p>don't know what I am</p>";
