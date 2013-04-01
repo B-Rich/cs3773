@@ -1,5 +1,6 @@
 <?php 
 session_start();
+require_once('db.php');
 ?>
 <!DOCTYPE html>
     <html><head>
@@ -91,10 +92,10 @@ session_start();
 	  <body>
 	  <div class = "contents">	  
 	  	<div class= "logo">
-		  <img src="EHIS.png" id="pic"><br>
+		  <img src="EHIS_LOGO.png" id="pic"><br>
 		  <h2 class="conn">Connecting People with Health Care</h2>
 		</div>
-<?
+<?php
 $userstr = ' (Guest)';
 
 if (isset($_SESSION['user']))
@@ -109,24 +110,34 @@ if (isset($_SESSION['user']))
 
 <div class='main'>
 	<h3>Login</h3>
-<?
+<?php
+$conn = connect_db();
 $error = $user = $pass = "";
 
-if (isset($_POST['user']))
-{
-    $user = sanitizeString($_POST['user']);
-    $pass = sanitizeString($_POST['pass']);
-    
-    if ($user == "" || $pass == "")
-    {
-        $error = "Not all fields were entered<br />";
-    }
-    else
-    {
-        $query = "SELECT user,pass FROM members
-            WHERE user='$user' AND pass='$pass'";
+if (isset($_POST['Login'])){
+   
 
-        if (mysql_num_rows(queryMysql($query)) == 0)
+   if (isset($_POST['user']))
+   {
+      // this will need to be implemented in order to provide security to the login page
+      //$user = sanitizeString($_POST['user']);
+      //$pass = sanitizeString($_POST['pass']);
+      
+      $user = $_POST['user'];
+      $pass = $_POST['pass'];
+      
+      if ($user == "" || $pass == "")
+      {
+        $error = "<p>Not all fields were entered</p><br />";
+        //echo $error;
+      }
+      else
+      {
+        $query = "SELECT username,password FROM user
+            WHERE username='$user' AND password='$pass' ";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) == 0)
         {
             $error = "<span class='error'>Username/Password
                       invalid</span><br /><br />";
@@ -135,14 +146,19 @@ if (isset($_POST['user']))
         {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $pass;
-            die("You are now logged in. Please <a href='members.php?view=$user'>" .
-                "click here</a> to continue.<br /><br />");
+            header("Location: members.php");
+            //die("You are now logged in. Please <a href='members.php?view=$user'>" .
+                //"click here</a> to continue.<br /><br />");
         }
+      }
+      
     }
+    //close connection to the database
+    mysqli_close($conn);
 }
-
+echo $error;
 echo <<<_END
-<form method='post' action='login.php'>$error
+<form method='post' action='login.php'>
 <span class='fieldname'>Username</span><br><input type='text'
     maxlength='16' name='user' value='$user' /><br />
 <span class='fieldname'>Password</span><br><input type='password'
@@ -152,7 +168,7 @@ _END;
 
 <br />
 <span class='fieldname'>&nbsp;</span><br>
-<input type='submit' class="button" value='Submit' />
+<input type='submit' class="button" name='Login' value='Submit' />
 </form><br />
 	</div>
 </div>
