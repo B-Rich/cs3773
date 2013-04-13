@@ -133,7 +133,7 @@ if (isset($_POST['Login'])){
       }
       else
       {
-        $query = "SELECT username,password FROM User
+        $query = "SELECT username,password,type FROM User
             WHERE username='$user' AND password='$pass' ";
         $result = mysqli_query($conn, $query);
 
@@ -146,6 +146,8 @@ if (isset($_POST['Login'])){
         {
             $_SESSION['user'] = $user;
             $_SESSION['pass'] = $pass;
+            $row = mysqli_fetch_assoc($result);
+            $_SESSION['type'] = $row['type'];
             header("Location: members.php");
             //die("You are now logged in. Please <a href='members.php?view=$user'>" .
                 //"click here</a> to continue.<br /><br />");
