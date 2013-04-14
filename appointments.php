@@ -1,7 +1,6 @@
-<html>
 <?php
-   session_start();
-   require_once('db.php');
+require_once('db.php');
+function display_appointments($doctor){
    $conn = connect_db();
 
    //get current date for query
@@ -12,7 +11,7 @@
    //for the current day, list in order of time (ascending) 
    $query = "SELECT time, fname, lname
              FROM User, Appointment
-             WHERE username=patient AND date='$curr_date'
+             WHERE username=patient AND date='$curr_date' AND doctor='$doctor'
              ORDER BY time";
    
    //execute query and get result
@@ -32,6 +31,5 @@
 
    //close connection
    mysqli_close($conn);
-   
+   }
 ?>
-</html>
