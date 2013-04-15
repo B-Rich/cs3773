@@ -4,6 +4,7 @@
 <?php
    session_start();
    include_once('db.php');
+   include_once('functions.php');
    // session not logged in so redirect to login page
    if(!isset($_SESSION['user'])){
       header("Location: login.php");
@@ -18,7 +19,7 @@
 ?>
 
    <form action="searchchart.php" method="POST">
-   Search Patient: <input type = "text" name = "searchString" size = "20">
+   <input type = "text" placeholder="Enter patient last name" name = "searchString" size = "20">
    <input type = "submit" value = "Search" name = "search">
 </form>
 <br>
@@ -26,12 +27,11 @@
 <?php
    //search patients based on substring match in first or last name
    if (isset($_POST['search'])){
-      //$searchString = sanitizeString($_POST['searchString']);
-      $searchString = $_POST['searchString'];
+      $searchString = sanitizeString($_POST['searchString']);
+      //$searchString = $_POST['searchString'];
       $query = "select fname, minit, lname, dob, username
                 from User 
-                where (fname like '%$searchString%'
-                or lname like '%$searchString%')
+                where lname like '%$searchString%'
                 and type='patient'";
       $result = mysqli_query($conn, $query);
 
