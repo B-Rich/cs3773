@@ -41,7 +41,8 @@
       }
       else{
          while ($row = mysqli_fetch_array($result, MYSQL_NUM)){
-             echo "$row[0] $row[1] $row[2], DOB: $row[3]";
+         $patient = $row[4];
+             echo "<a href=chart.php?patient=$patient>$row[0] $row[1] $row[2], DOB: $row[3]</a><br>";
          }
       }
    }
