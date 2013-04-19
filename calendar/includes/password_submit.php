@@ -51,7 +51,7 @@ function password_submit()
                 return tag('div', _('Your passwords did not match'));
         }
 
-        $passwd = md5($vars['password1']);
+        $passwd = $vars['password1'];
 
 	$phpcdb->set_password($phpc_uid, $passwd);
 

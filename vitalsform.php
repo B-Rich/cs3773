@@ -50,10 +50,16 @@ echo
 </form>";
 
 if (isset($_POST['submit'])){
-   $query = "insert into Log(currentmedcondition, bp, temp, pulse, weight, height)
-             values('$currentcond', '$bp', '$temp', '$pulse', '$weight', '$height')";
+   $query = "update Log
+             set currentmedcondition='$currentcond', bp='$bp', temp='$temp', pulse='$pulse', weight='$weight', height='$height')
+             where cid=$cid and date=current_date";
    $result = mysqli_query($conn, $query);
-   header("Location: chart.php?patient=$patient");
+   if ($result){
+      echo "error<br>";
+   }
+   echo "cid: $cid<br>";
+   
+//   header("Location: chart.php?patient=$patient");
 }
 
 ?>

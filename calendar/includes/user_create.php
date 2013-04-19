@@ -49,7 +49,7 @@ function user_create()
 
 	$make_admin = empty($vars['make_admin']) ? 0 : 1;
 
-        $passwd = md5($vars['password1']);
+        $passwd = $vars['password1'];
 
 	if($phpcdb->get_user_by_name($vars["user_name"]))
 		return message_redirect(_('User already exists.'), $form_page);

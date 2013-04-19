@@ -61,7 +61,7 @@ function login_user($username, $password)
 	// session_regenerate_id();
 
 	$user = $phpcdb->get_user_by_name($username);
-	if(!$user || $user->password != md5($password))
+	if(!$user || $user->password != $password)
 		return false;
 
 	phpc_do_login($user);

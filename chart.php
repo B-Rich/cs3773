@@ -64,14 +64,14 @@ $query = "select *
           where cid=$cid and date=current_date";
 $result = mysqli_query($conn, $query);
 if (mysqli_num_rows($result) == 0){
+   echo "Creating chart <br>";
    //start new log entry for today -- ***NEED TO FIX DATABASE
-/*
    $query1 = "insert into Log(cid, date)
-             values (***, current_date)";
+             values ($cid, current_date)";
    $result1 = mysqli_query($conn, $query1);
-   if (mysqli_num_rows($result1) == 0){
+   if ($result1 == 0){
       echo "Unable to open patient chart<br>";
-   }*/
+   }
    $diagnosis = "[Not entered]";
    $currentcond=  "[Not entered]";
    $treatplan=  "[Not entered]";
