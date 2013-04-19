@@ -61,6 +61,8 @@ _END;
 ?>
 <p> <a href="http://ehisproject.dyndns.org/cs3773/appointments.php">APPOINTMENTS!</a> </p>
 <p> <a href="http://ehisproject.dyndns.org/cs3773/searchchart.php">SEARCH CHART!</a> </p>
+<p> <a href="http://ehisproject.dyndns.org/cs3773/messages.php">SEND MESSAGING!</a> </p>
+<p> <a href="http://ehisproject.dyndns.org/cs3773/inbox.php">INBOX!</a> </p>
 <p> <a href="javascript:gotoLogout()">Logout</a> </p>
 </body>
 </html>
