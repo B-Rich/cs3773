@@ -59,10 +59,10 @@ _END;
       //close connection to the database
       mysqli_close($conn);
 ?>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/appointments.php">APPOINTMENTS!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/searchchart.php">SEARCH CHART!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/messages.php">SEND MESSAGING!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/inbox.php">INBOX!</a> </p>
+<p> <a href="appointments.php">APPOINTMENTS!</a> </p>
+<p> <a href="searchchart.php">SEARCH CHART!</a> </p>
+<p> <a href="messages.php">SEND MESSAGING!</a> </p>
+<p> <a href="inbox.php">INBOX!</a> </p>
 <p> <a href="javascript:gotoLogout()">Logout</a> </p>
 </body>
 </html>
