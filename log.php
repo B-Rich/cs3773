@@ -12,7 +12,7 @@ if(!isset($_SESSION['user'])){
 
 $user = $_SESSION['user'];
 $type = $_SESSION['type'];
-$patient = $_GET['patient'];
+$cid = $_GET['cid'];
 //if user doesn't have permission to view this page, redirect to home
 if ($type != 'doctor' && $type != 'nurse'){
    header("Location: members.php");

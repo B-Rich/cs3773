@@ -13,14 +13,44 @@ if(!isset($_SESSION['user'])){
 
 $user = $_SESSION['user'];
 $type = $_SESSION['type'];
-$patient = $_GET['patient'];
+$cid = $_GET['cid'];
 $conn = connect_db();
 
-echo "<a href='log.php?patient=$patient'>Current Appointment</a><br>";
-/* not implemented yet */
-echo "<a href='pastlog.php?patient=$patient'>Past Appointments</a><br>";
-echo "<a href='personal.php?patient=$patient'>Personal Information</a><br>";
+/* get and display patient's basic personal information */
+$query = "select *
+          from Personal_Info p
+          where p.cid = $cid
+          order by time desc";
 
+$result = mysqli_query($conn, $query);
+if (!$result || (mysqli_num_rows($result) == 0)){
+   $error = "<span class='error'>Unable to find 
+   patient information</span><br><br>";
+}
+
+else{
+   $row = mysqli_fetch_array($result);
+   
+   $fname = $row[2];
+   $minit = $row[3];
+   $lname = $row[4];
+   $dob = $row[6];
+   $gender = formatFromDB($row[7]);
+   
+   echo "
+   Patient: $fname $minit $lname <br>
+   Date of Birth: $dob <br>
+   Gender: $gender <br><br>";
+   
+   /* print links to patient's chart */
+   
+   echo "<a href='personal.php?cid=$cid'>Personal Information</a><br>";
+  // echo "<a href='log.php?cid=$cid'>Current Appointment</a><br>";
+   echo "<a href='vitalsform.php?cid=$cid'>Enter Current Medical Information</a><br>";
+   echo "<a href='pastlog.php?cid=$cid'>Previous Appointments</a><br>";
+   echo "<a href='medHistory.php?cid=$cid'>Medical History</a><br>";
+   echo "<a href='diagnosis.php?cid=$cid'>Enter Diagnosis / Treatment Plan</a><br>";
+}
 ?>
 
 </body>
