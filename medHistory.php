@@ -98,7 +98,7 @@ else{
     echo "<br>";
     echo "Vaccines in past 5 years:<br>";
     echo "Chickenpox: ";
-    echo $chickenpox ? "Yes<br>" : "No<br>";
+    echo $chickenp ? "Yes<br>" : "No<br>";
     echo "Tetanus: ";
     echo $tetanus? "Yes<br>" : "No<br>";
     echo "MMR: ";
@@ -122,7 +122,47 @@ echo
 "<form action='editMedHistory.php?cid=$cid' method='POST'>
    <input type = 'submit' value = 'Edit Medical History' name = 'medhist'>
 </form>";
+
+echo "<form action='medHistory.php?cid=$cid' method='POST'>";
+echo "Add new comment:<br>";
+echo "<textarea name = 'comment' rows='4' cols='50'></textarea><br>";
+echo "<input type = 'submit' value='Submit' name='submit'>";
+echo "</form>";
 }
+
+if (isset($_POST['submit'])){
+   $comment = sanitizeString($_POST['comment']);
+   $query = "insert into Chart_Comments
+             values(?, current_timestamp, ?)";
+   $stmt = mysqli_prepare($conn, $query);
+   mysqli_stmt_bind_param($stmt, 'is', $cid, $comment); 
+   mysqli_stmt_execute($stmt);
+   if (mysqli_stmt_affected_rows($stmt) == 0){
+      echo "Unable to add comment. ".mysqli_error($conn)."<br>";
+   }
+   else{
+      /* reload page */
+      header('Location: '.$_SERVER['REQUEST_URI']);
+   }
+}
+
+/* get old comments */
+$query = "select * from 
+          Chart_Comments
+          order by time desc";
+$result = mysqli_query($conn, $query);
+if (!$result){
+   echo "Unable to load comments<br>";
+}
+else{
+   while ($row = mysqli_fetch_array($result)){
+      $time = $row[1];
+      $content = $row[2];
+      echo "Time: $time<br>";
+      echo "$content<br><br><br>";
+   }
+}
+
 ?>
 
 </body>

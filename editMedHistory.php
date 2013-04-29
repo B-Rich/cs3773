@@ -33,42 +33,170 @@ else{
   
 echo "Patient: $fname $minit $lname:";
 
+/* Get current medical history form */
+$query = "select *
+          from Medical_History
+          where cid=$cid
+          order by time desc";
+$result = mysqli_query($conn, $query);
+if (!$result){
+   echo "Error: Unable to access medical history<br>";
+}
+
+else{
+/* get current medical history information */
+
+   $cancer_s = null;
+   $cancer_m = null;
+   $cancer_f = null;
+   $cancerdesc  = null;
+   $heart_s = null;
+   $heart_m = null;
+   $heart_f = null;
+   $heartdesc  = null;
+   $chickenp  = null;
+   $tetanus  = null;
+   $mmr  = null;
+   $alcohol  = null;
+   $tobacco  = null;
+   $exercise  = null;
+   $surgeries  = null;
+   $allergies  = null;
+   $currentmeds = null;
+
+   if ($row = mysqli_fetch_array($result)){
+      $cancer_s = $row[2];
+      $cancer_m = $row[3];
+      $cancer_f = $row[4];
+      $cancerdesc  = $row[5];
+      $heart_s = $row[6];
+      $heart_m = $row[7];
+      $heart_f = $row[8];
+      $heartdesc  = $row[9];
+      $chickenp  = $row[10];
+      $tetanus  = $row[11];
+      $mmr  = $row[12];
+      $alcohol  = $row[13];
+      $tobacco  = $row[14];
+      $exercise  = $row[15];
+      $surgeries  = $row[16];
+      $allergies  = $row[17];
+      $currentmeds  = $row[18];
+   }
+}
+
+
 /* print medical history form */
-// FIX - prefill form with existing values
 
   // Temperature: <input type = 'text' name = 'temp' value=\"$temp\" size = '20'><br>
 echo "<form action='editMedHistory.php?cid=$cid' method='POST'>
    Enter Medical History information below:<br><br>
    Have you or a family member had cancer?
-   <input type='checkbox' name ='cancer_s' value ='1'>Self   
-   <input type='checkbox' name ='cancer_m' value ='1'>Mother's Side
-   <input type='checkbox' name ='cancer_f' value ='1'>Father's Side<br>
-   If yes, please describe:<br>
-   <textarea name = 'cancerdesc' rows='4' cols='50'></textarea><br>
-   Have you or a family member had heart disease?
-   <input type='checkbox' name ='heart_s' value ='1'>Self   
-   <input type='checkbox' name ='heart_m' value ='1'>Mother's Side
-   <input type='checkbox' name ='heart_f' value ='1'>Father's Side<br>
-   If yes, please describe:<br>
-   <textarea name = 'heartdesc' rows='4' cols='50'></textarea><br>
-   Have you had the following immunizations within the past 5 years:
-   <input type='checkbox' name ='chickenp' value ='1'>Chickenpox<br>
-   <input type='checkbox' name ='tetanus' value ='1'>Tetanus<br>
-   <input type='checkbox' name ='mmr' value ='1'>MMR<br>
-   How often do you consume alcoholic beverages?<br>
-   <input type='radio' name='alcohol' value='n'>Never<br>
-   <input type='radio' name='alcohol' value='_s'>Sometimes<br>
-   <input type='radio' name='alcohol' value='o'>Often<br>
-   How often do you smoke or use tobacco?<br>
-   <input type='radio' name='tobacco' value='n'>Never<br>
-   <input type='radio' name='tobacco' value='s'>Sometimes<br>
-   <input type='radio' name='tobacco' value='o'>Often<br>
-   How often do you exercise?<br>
-   <input type='radio' name='exercise' value='1'>Never<br>
-   <input type='radio' name='exercise' value='2'>Less than twice per week<br>
-   <input type='radio' name='exercise' value='3'>2-4 times per week<br>
-   <input type='radio' name='exercise' value='4'>More than 4 times per week<br>
-   Blood Type: <input type = 'text' name = 'bloodtype' size = '20'><br>
+   <input type='checkbox' name ='cancer_s' value ='1'"; 
+   if ($cancer_s == '1'){
+      echo "checked";
+   }
+   echo ">Self   
+   <input type='checkbox' name ='cancer_m' value ='1'";
+   if ($cancer_m == '1'){
+      echo "checked";
+   }
+   echo">Mother's Side
+   <input type='checkbox' name ='cancer_f' value ='1'";
+   if ($cancer_f == '1'){
+      echo "checked";
+   }
+   echo">Father's Side<br>";
+   echo "If yes, please describe:<br>
+   <textarea name = 'cancerdesc' rows='4' cols='50'>$cancerdesc</textarea><br>";
+   echo "Have you or a family member had heart disease?
+   <input type='checkbox' name ='heart_s' value ='1'";
+   if ($heart_s == '1'){
+      echo "checked";
+   }
+   echo ">Self   
+   <input type='checkbox' name ='heart_m' value ='1'";
+    if ($heart_m == '1'){
+      echo "checked";
+   }
+   echo ">Mother's Side
+   <input type='checkbox' name ='heart_f' value ='1'";
+   if ($heart_m == '1'){
+      echo "checked";
+   }
+   echo ">Father's Side<br>";
+   echo "If yes, please describe:<br>
+   <textarea name = 'heartdesc' rows='4' cols='50'>$heartdesc</textarea><br>";
+   echo "Have you had the following immunizations within the past 5 years:
+   <input type='checkbox' name ='chickenp' value ='1'";
+   if ($chickenp == '1'){
+      echo "checked";
+   }
+   echo ">Chickenpox<br>
+   <input type='checkbox' name ='tetanus' value ='1'";
+   if ($tetanus == '1'){
+      echo "checked";
+   }
+   echo ">Tetanus<br>
+   <input type='checkbox' name ='mmr' value ='1'";
+   if ($mmr == '1'){
+      echo "checked";
+   }
+   echo ">MMR<br>";
+   echo "How often do you consume alcoholic beverages?<br>";
+   echo "<input type='radio' name='alcohol' value='n'";
+   if ($alcohol == 'n'){
+      echo "checked";
+   }
+   echo ">Never<br>
+   <input type='radio' name='alcohol' value='s'";
+   if ($alcohol == 's'){
+      echo "checked";
+   }
+   echo ">Sometimes<br>
+   <input type='radio' name='alcohol' value='o'";
+   if ($alcohol == 'o'){
+      echo "checked";
+   }
+   echo ">Often<br>";
+   echo "How often do you smoke or use tobacco?<br>
+   <input type='radio' name='tobacco' value='n'";
+   if ($tobacco == 'n'){
+      echo "checked";
+   }
+   echo ">Never<br>
+   <input type='radio' name='tobacco' value='s'";
+   if ($tobacco == 's'){
+      echo "checked";
+   }
+   echo ">Sometimes<br>
+   <input type='radio' name='tobacco' value='o'";
+   if ($tobacco == 'o'){
+      echo "checked";
+   }
+   echo ">Often<br>";
+   echo "How often do you exercise?<br>
+   <input type='radio' name='exercise' value='1'"
+   if ($exercise == '1'){
+      echo "checked";
+   }
+   echo ">Never<br>
+   <input type='radio' name='exercise' value='2'";
+   if ($exercise == '2'){
+      echo "checked";
+   }
+   echo ">Less than twice per week<br>
+   <input type='radio' name='exercise' value='3'";
+   if ($exercise == '3'){
+      echo "checked";
+   }
+   echo">2-4 times per week<br>
+   <input type='radio' name='exercise' value='4'";
+   if ($exercise == '4'){
+      echo "checked";
+   }
+   echo ">More than 4 times per week<br>";
+   Blood Type: <input type = 'text' name = 'bloodtype' size = '20' value = $bloodtype><br>
    Surgeries:<br>
    <textarea name = 'surgeries' rows='4' cols='50'></textarea><br>
    Allergies:<br>
