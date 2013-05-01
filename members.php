@@ -17,14 +17,14 @@ if(!isset($_SESSION['user'])){
 <head> 
 <title> Member's Page</title>
 <script src="linknav.js"></script>
-<link rel="stylesheet" type="text/css" href="http://ehisproject.dyndns.org/cs3773/calendar/static/phpc.css">
+<link rel="stylesheet" type="text/css" href="./calendar/static/phpc.css">
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="http://ehisproject.dyndns.org/cs3773/calendar/static/jquery-ui-timepicker.css">
+<link rel="stylesheet" type="text/css" href="./calendar/static/jquery-ui-timepicker.css">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://ehisproject.dyndns.org/cs3773/calendar/static/phpc.js"></script>
-<script type="text/javascript" src="http://ehisproject.dyndns.org/cs3773/calendar/static/jquery.ui.timepicker.js"></script>
-<script type="text/javascript" src="http://ehisproject.dyndns.org/cs3773/calendar/static/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="./calendar/static/phpc.js"></script>
+<script type="text/javascript" src="./calendar/static/jquery.ui.timepicker.js"></script>
+<script type="text/javascript" src="./calendar/static/jquery.hoverIntent.minified.js"></script>
 </head>
 <body>
 
@@ -133,7 +133,9 @@ echo <<<_END
 _END;
 
 
-	}	
+	}
+//receptionist needs to select a patient to schedual
+//an appoint for	
 echo <<<_END
 	<form action="/cs3773/members.php" method="POST">
 	<th>Schedual Next Appointment?:</th>
@@ -162,11 +164,11 @@ _END;
       //close connection to the database
       mysqli_close($conn);
 ?>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/appointments.php">APPOINTMENTS!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/searchchart.php">SEARCH CHART!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/messages.php">SEND MESSAGING!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/inbox.php">INBOX!</a> </p>
-<p> <a href="http://ehisproject.dyndns.org/cs3773/changepassword.php">CHANGE PASSWORD</a> </p>
+<p> <a href="./appointments.php">APPOINTMENTS!</a> </p>
+<p> <a href="./searchchart.php">SEARCH CHART!</a> </p>
+<p> <a href="./messages.php">SEND MESSAGING!</a> </p>
+<p> <a href="./inbox.php">INBOX!</a> </p>
+<p> <a href="./changepassword.php">CHANGE PASSWORD</a> </p>
 <p> <a href="javascript:gotoLogout()">Logout</a> </p>
 </body>
 </html>

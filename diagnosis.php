@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('db.php');
+require_once('functions.php');
 
 //if user not logged in, redirect to home page
 if(!isset($_SESSION['user'])){
@@ -9,30 +10,40 @@ if(!isset($_SESSION['user'])){
 
 $user = $_SESSION['user'];
 $type = $_SESSION['type'];
-$patient = $_GET['patient'];
 $cid = $_GET['cid'];
 
-//if user doesn't have permission to view this page, redirect to home
+/* if user doesn't have permission to view this page, redirect to home */
 if ($type != 'doctor'){
    header("Location: members.php");
 }
-//make database connection
+/* make database connection */
 
 $conn = connect_db();
 
-//Get current diagnosis 
-$query = "select diagnosis
+/* Get current diagnosis */
+$query = "select diagnosis, treatmentplan
           from Log
           where cid='$cid' and date=current_date";
 $result = mysqli_query($conn, $query);
-if (mysqli_num_rows($result) == 0){
-   echo "Error: Unable to find patient chart<br>";
+$diagnosis = null;
+$tplan = null;
+if ($result == false || mysqli_num_rows($result) == 0){
+   /* make new chart entry for patient */
+   $query = "insert into Log(cid, date)
+             values($cid, current_timestamp)";
+   $result = mysqli_query($conn, $query);
+   if (!$result){
+      //handle error
+      echo "Unable to access chart for patient<br>";
+   }
 }
+else{
 
    $row = mysqli_fetch_array($result);
-   $diagnosis= ($row[0] == null)? "[Not entered]" : $row[0];
-
-//print diagnosis form
+   $diagnosis= formatFromDB($row[0]);
+   $tplan = formatFromDB($row[1]);
+}
+/* print diagnosis form */
 echo
    "
    <form action='diagnosis.php?patient=$patient&cid=$cid' method='POST'>
@@ -40,12 +51,53 @@ echo
    <textarea name = 'diagnosis' rows='4' cols='50'>$diagnosis</textarea><br>
    <input type = 'submit' value = 'Submit' name = 'submit'>
 </form>";
+ 
+   if (isset($_POST['submit'])){
+ 
+      $diagnosis = $_POST['diagnosis'];
 
-if (isset($_POST['submit'])){
-   $query = "insert into Log(diagnosis)
-             values('$diagnosis')";
-   $result = mysqli_query($conn, $query);
-   header("Location: chart.php?patient=$patient");
-}
+      $query = "update Log
+                set diagnosis=?
+                where cid=$cid and date=current_date";
+      $stmt = mysqli_prepare($conn, $query);
+      mysqli_stmt_bind_param($stmt, 's', $diagnosis);
+        
+      /* execute prepared statement */
+      mysqli_stmt_execute($stmt);
+      if (mysqli_stmt_affected_rows($stmt) == 0){
+         echo "Error entering diagnosis<br>".mysql_error()."<br>";
+      }
+      
+      /* reload page */
+      header("Location: log.php?patient=$patient");
+   }
 
+/* print treatmentplan form */
+echo
+   "
+   <form action='treatmentplan.php?patient=$patient&cid=$cid' method='POST'>
+   Enter Diagnosis:<br>
+   <textarea name = 'treatmentplan' rows='4' cols='50'>$treatmentplan</textarea><br>
+   <input type = 'submit' value = 'Submit' name = 'submit'>
+</form>";
+ 
+   if (isset($_POST['submit'])){
+ 
+      $treatmentplan = $_POST['treatmentplan'];
+
+      $query = "update Log
+                set treatmentplan=?
+                where cid=$cid and date=current_date";
+      $stmt = mysqli_prepare($conn, $query);
+      mysqli_stmt_bind_param($stmt, 's', $treatmentplan);
+        
+      /* execute prepared statement */
+      mysqli_stmt_execute($stmt);
+      if (mysqli_stmt_affected_rows($stmt) == 0){
+         echo "Error entering treatmentplan<br>".mysql_error()."<br>";
+      }
+      
+      /* reload page */
+      //header("Location: log.php?patient=$patient");
+   }
 ?>

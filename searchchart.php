@@ -28,11 +28,11 @@
    //search patients based on substring match in first or last name
    if (isset($_POST['search'])){
       $searchString = sanitizeString($_POST['searchString']);
-      //$searchString = $_POST['searchString'];
-      $query = "select fname, minit, lname, dob, username
-                from User 
-                where lname like '%$searchString%'
-                and type='patient'";
+      $query = "select distinct p.fname, p.minit, p.lname, p.dob, m.cid
+                from Member m, Personal_Info p
+                where m.type='patient' and m.cid = p.cid and
+                lname like '%$searchString%'";
+                
       $result = mysqli_query($conn, $query);
 
       //display results - plain text for now, will need to link to chart
@@ -41,8 +41,8 @@
       }
       else{
          while ($row = mysqli_fetch_array($result, MYSQL_NUM)){
-         $patient = $row[4];
-             echo "<a href=chart.php?patient=$patient>$row[0] $row[1] $row[2], DOB: $row[3]</a><br>";
+         $cid = $row[4];
+             echo "<a href=chart.php?cid=$cid>$row[0] $row[1] $row[2], DOB: $row[3]</a><br>";
          }
       }
    }
