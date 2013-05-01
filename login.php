@@ -133,7 +133,7 @@ if (isset($_POST['Login'])){
       }
       else
       {
-        $query = "SELECT username,password,type FROM User
+        $query = "SELECT username,password,type FROM Member
             WHERE username='$user' AND password='$pass' ";
         $result = mysqli_query($conn, $query);
 
@@ -162,16 +162,19 @@ echo $error;
 echo <<<_END
 <form method='post' action='login.php'>
 <span class='fieldname'>Username</span><br><input type='text'
-    maxlength='16' name='user' value='$user' /><br />
+    maxlength='16' name='user' value='$user' autofocus/><br />
 <span class='fieldname'>Password</span><br><input type='password'
-    maxlength='16' name='pass' value='$pass' />
+    maxlength='16' name='pass' value='$pass' /><br/>
+<span style="color:black; font-size:15px;"><a href="./forgotpassword.php"> Forgot your password?</a></span>
 _END;
 ?>
+
 
 <br />
 <span class='fieldname'>&nbsp;</span><br>
 <input type='submit' class="button" name='Login' value='Submit' />
 </form><br />
+
 	</div>
 </div>
 </body>
