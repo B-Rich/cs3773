@@ -25,16 +25,24 @@ $query = "select diagnosis, treatmentplan
           from Log
           where cid='$cid' and date=current_date";
 $result = mysqli_query($conn, $query);
+$diagnosis = null;
+$tplan = null;
 if ($result == false || mysqli_num_rows($result) == 0){
-   //FIX - should create new record here 
-   echo "Error: Unable to find patient chart<br>";
+   /* make new chart entry for patient */
+   $query = "insert into Log(cid, date)
+             values($cid, current_timestamp)";
+   $result = mysqli_query($conn, $query);
+   if (!$result){
+      //handle error
+      echo "Unable to access chart for patient<br>";
+   }
 }
 else{
 
    $row = mysqli_fetch_array($result);
    $diagnosis= formatFromDB($row[0]);
    $tplan = formatFromDB($row[1]);
-
+}
 /* print diagnosis form */
 echo
    "
@@ -90,9 +98,6 @@ echo
       }
       
       /* reload page */
-      header("Location: log.php?patient=$patient");
+      //header("Location: log.php?patient=$patient");
    }
-
-}
-
 ?>

@@ -31,7 +31,7 @@ else{
    $lname = $row[2];
 }
   
-echo "Patient: $fname $minit $lname:";
+echo "Patient: $fname $minit $lname:<br><br>";
 
 /* Get current medical history to display*/
 $query = "select *
@@ -66,9 +66,10 @@ else{
       $alcohol  = $row[13];
       $tobacco  = $row[14];
       $exercise  = $row[15];
-      $surgeries  = $row[16];
-      $allergies  = $row[17];
-      $currentmeds = $row[18];
+      $bloodtype = $row[16];
+      $surgeries  = $row[17];
+      $allergies  = $row[18];
+      $currentmeds = $row[19];
     echo "Cancer: ";
     if ($cancer_s){
        echo "Self ";
@@ -104,14 +105,58 @@ else{
     echo "MMR: ";
     echo $mmr? "Yes<br>" : "No<br>";
     echo "Alcohol use: ";
-    echo ($alcohol == null) ? "Unknown" : $alcohol;
-    echo "<br>";
+    switch($alcohol){
+       case 'n':
+          echo "Never<br>";
+          break;
+       case 's':
+          echo "Sometimes<br>";
+          break;
+       case 'o':
+          echo "Often<br>";
+          break;
+       default:
+          echo "Unknown<br>";
+    }
+    //echo ($alcohol == null) ? "Unknown" : $alcohol;
+    //echo "<br>";
     echo "Tobacco use: ";
-    echo ($tobacco == null) ? "Unknown" : $tobacco;
-    echo "<br>";
+   // echo ($tobacco == null) ? "Unknown" : $tobacco;
+    switch($tobacco){
+       case 'n':
+          echo "Never<br>";
+          break;
+       case 's':
+          echo "Sometimes<br>";
+          break;
+       case 'o':
+          echo "Often<br>";
+          break;
+       default:
+          echo "Unknown<br>";
+     }
+    //echo "<br>";
     echo "Exercise frequency: ";
-    echo ($exercise == null) ? "Unknown" : $exercise;
-    echo "<br>";
+    switch($tobacco){
+       case '1':
+          echo "Never<br>";
+          break;
+       case '2':
+          echo "Less than twice per week<br>";
+          break;
+       case '3':
+          echo "2-4 times per week<br>";
+          break;
+       case '4':
+          echo "More than 4 times per week<br>";
+          break;
+       default:
+          echo "Unknown<br>";
+     }
+
+    //echo ($exercise == null) ? "Unknown" : $exercise;
+    //echo "<br>";
+    echo "Blood type: $bloodtype<br>";
     echo "Surgeries:<br>$surgeries<br><br>";
     echo "Allergies:<br>$allergies<br><br>";
     echo "Current medications:<br>$currentmeds<br><br>";

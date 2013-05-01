@@ -32,7 +32,6 @@ else{
 }
   
 echo "Enter Vitals For Patient $fname $minit $lname:";
-//FIX - need to create log file if doesn't exist yet
 
 /* Get current vitals to display in form */
 $query = "select *
@@ -40,7 +39,15 @@ $query = "select *
           where cid=$cid and date=current_date";
 $result = mysqli_query($conn, $query);
 if ($result == false || mysqli_num_rows($result) == 0){
-   echo "Error: Unable to find patient chart<br>";  
+
+   /* make new chart entry for this appointment */
+   $query = "insert into Log(cid, date)
+             values($cid, current_timestamp)";
+   $result = mysqli_query($conn, $query);
+   if (!$result){
+      //handle error
+      echo "Error: Unable to find patient information<br>".mysqli_error($conn);
+   }
 }
 else{
 
@@ -67,7 +74,13 @@ echo "<form action='vitalsform.php?cid=$cid' method='POST'>
 /* submit changes to database when user presses submit */
    if (isset($_POST['submit'])){
       $currentcond = $_POST['currentcond'];
+      if ($currentcond == "[Not entered]"){
+          $currentcond = null;
+      }
       $bp = $_POST['bp'];
+      if ($bp == "[Not entered]"){
+          $bp = null;
+      }
       $temp = $_POST['temp'];
       $pulse = $_POST['pulse'];
       $weight = $_POST['weight'];

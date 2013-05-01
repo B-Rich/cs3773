@@ -79,9 +79,10 @@ else{
       $alcohol  = $row[13];
       $tobacco  = $row[14];
       $exercise  = $row[15];
-      $surgeries  = $row[16];
-      $allergies  = $row[17];
-      $currentmeds  = $row[18];
+      $bloodtype = $row[16];
+      $surgeries  = $row[17];
+      $allergies  = $row[18];
+      $currentmeds  = $row[19];
    }
 }
 
@@ -176,7 +177,7 @@ echo "<form action='editMedHistory.php?cid=$cid' method='POST'>
    }
    echo ">Often<br>";
    echo "How often do you exercise?<br>
-   <input type='radio' name='exercise' value='1'"
+   <input type='radio' name='exercise' value='1'";
    if ($exercise == '1'){
       echo "checked";
    }
@@ -196,16 +197,15 @@ echo "<form action='editMedHistory.php?cid=$cid' method='POST'>
       echo "checked";
    }
    echo ">More than 4 times per week<br>";
-   Blood Type: <input type = 'text' name = 'bloodtype' size = '20' value = $bloodtype><br>
-   Surgeries:<br>
-   <textarea name = 'surgeries' rows='4' cols='50'></textarea><br>
-   Allergies:<br>
-   <textarea name = 'allergies' rows='4' cols='50'></textarea><br>
-   Current Medications:<br>
-   <textarea name = 'currentmeds' rows='4' cols='50'></textarea><br>
-   <input type = 'submit' value = 'Submit' name = 'submit'>
+   echo "Blood Type: <input type = 'text' name = 'bloodtype' size = '20' value = $bloodtype><br>";
+   echo "Surgeries:<br>
+   <textarea name = 'surgeries' rows='4' cols='50'>$surgeries</textarea><br>";
+   echo "Allergies:<br>
+   <textarea name = 'allergies' rows='4' cols='50'>$allergies</textarea><br>";
+   echo "Current Medications:<br>
+   <textarea name = 'currentmeds' rows='4' cols='50'>$currentmeds</textarea><br>";
+   echo "<input type = 'submit' value = 'Submit' name = 'submit'>
    </form>";
-
 
 /* submit changes to database when user presses submit */
    if (isset($_POST['submit'])){
@@ -222,24 +222,26 @@ echo "<form action='editMedHistory.php?cid=$cid' method='POST'>
       $mmr = isset($_POST['mmr'])? $_POST['mmr'] : '0';
       $alcohol = isset($_POST['alcohol'])? $_POST['alcohol'] : null;
       $tobacco = isset($_POST['tobacco'])? $_POST['tobacco'] : null;
+      $bloodtype = isset($_POST['bloodtype']) ? $_POST['bloodtype'] : null;
       $exercise = isset($_POST['exercise'])? $_POST['exercise'] : null;
       $surgeries = sanitizeString($_POST['surgeries']);
       $allergies = sanitizeString($_POST['allergies']);
       $currentmeds = sanitizeString($_POST['currentmeds']);
 
 $query = "insert into Medical_History
-          values (?, current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          values (?, current_timestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 $stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, 'isssssssssssssssss', $cid, $cancer_s, 
+mysqli_stmt_bind_param($stmt, 'issssssssssssssssss', $cid, $cancer_s, 
    $cancer_m, $cancer_f, $cancerdesc, $heart_s, $heart_m, $heart_f, 
    $heartdesc, $chickenp, $tetanus, $mmr, $alcohol, $tobacco, $exercise,
-   $surgeries, $allergies, $currentmeds);
+   $bloodtype, $surgeries, $allergies, $currentmeds);
 
 if (!mysqli_stmt_execute($stmt)){
    echo "Error saving medical history information<br>".mysqli_stmt_error($stmt)."<br>";
 }
 else{
    //redirect
+      header('Location: '.$_SERVER['REQUEST_URI']);
 }
 }
 ?>
