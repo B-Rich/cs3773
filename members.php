@@ -33,11 +33,12 @@ if(!isset($_SESSION['user'])){
 	// connect to the DB:
 	$conn = connect_db();
 	//get patient's first and last
-        if($_SESSION['user']=="patient"){
+        if($_SESSION['type']=="patient"){
                 //if patient get their name from their user name
                 $res=mysqli_query($conn,"SELECT cid FROM `Member` WHERE username='".$_SESSION['user']."'");
                 $row=mysqli_fetch_array($res);
-		$cid=$row[0];
+				$cid=$row[0];
+				
         }
  
 	if(isset($_POST['setApt'])){
@@ -77,7 +78,7 @@ if(!isset($_SESSION['user'])){
                 		`readonly` ,
                 		`catid`
                			)
-			VALUES (NULL, '".$calendarid."' , '3' , 'Appointment with ".$patientName."', 'Physical Exam', '0',NULL)";
+			VALUES (NULL, '".$calendarid."' , '3' , '".$patientName."', 'Physical Exam', '0',NULL)";
     			mysqli_query($conn, $eventQuery);
     			$eidQuery="SELECT MAX(eid) FROM `phpc_events`";
     			$res= mysqli_query($conn,$eidQuery);
@@ -98,7 +99,7 @@ if(!isset($_SESSION['user'])){
                 		`readonly` ,
                 		`catid`
                			)
-			VALUES (NULL, '".$calendarid."' , '3' , 'Appointment with ".$patientName."', 'Follow-Up', '0',NULL)";
+			VALUES (NULL, '".$calendarid."' , '3' , '".$patientName."', 'Follow-Up', '0',NULL)";
     			mysqli_query($conn, $eventQuery);
 			//occur query needs the eid of a particular event, the last event made will have the highest eid    			
 			$eidQuery="SELECT MAX(eid) FROM `phpc_events`";
@@ -119,7 +120,7 @@ if(!isset($_SESSION['user'])){
                 		`readonly` ,
                 		`catid`
                			)
-			VALUES (NULL, '".$calendarid."' , '3' , 'Appointment with ".$patientName."', 'Regular', '0',NULL)";
+			VALUES (NULL, '".$calendarid."' , '3' , '".$patientName."', 'Regular', '0',NULL)";
     			mysqli_query($conn, $eventQuery);
     			$eidQuery="SELECT MAX(eid) FROM `phpc_events`";
     			$res= mysqli_query($conn,$eidQuery);
@@ -130,9 +131,9 @@ if(!isset($_SESSION['user'])){
 		}
 		//make a new appointment tuple
   		mysqli_query($conn,"INSERT INTO `Appointment`(`eid`, `cid`, `checkout_time`, `arrival_time`, `appt_type`) VALUES ('".$eid."','".$cid."',NULL,NULL,'".$aType."')");
-		// execute the query and return the results this query makes a row in the phpc occurances table
+		//execute the query and return the results this query makes a row in the phpc occurances table
 		if( mysqli_query($conn, $occurQuery))
-			echo "<br> You have schedualed an appointment! <br>";
+			echo "<br>Successfully Schedualed an Appointment!<br>";
 		
 		//close connection to the database
      		mysqli_close($conn);
@@ -150,25 +151,27 @@ if(!isset($_SESSION['user'])){
 //receptionist needs to select a patient to schedual
 //an appointment for
 echo <<<_END
+	If you need to reschedual an appointment then please use the calendar function! Thank You<br>
+	If you need to cancel an appointment then please go to the appointment page below! <br>
 	<form action="./members.php" method="POST">
 	<th>Schedual Next Appointment?:</th>
-	 Date (YYYY-MM-DD): <input type="text" class="form-date" name="start-date" id="start-date">
+	<br>Date (YYYY-MM-DD): <input type="text" class="form-date" name="start-date" id="start-date">
 	<script type="text/javascript">$('#start-date').datepicker({dateFormat: "yy-mm-dd" });</script>
-	Patient: <select name="cid">
+	<br>Patient: <select name="cid">
 		<option value="4">Akhilesh Mantripragada</option>
                 <option value="7">Xavi Guzman</option>
                 <option value="6">Shane Bernard</option>
                 </select> 	
-	Doctor: <select name="calendarid">
-                <option value="1">Dr.Garza</option>
-                <option value="2">Dr.Taylor</option>
+	<br>Doctor: <select name="calendarid">
+                <option value="1">Dr.Taylor</option>
+                <option value="2">Dr.Garza</option>
                 </select> 
-        Time: <select name="start-time">
+    <br>Time: <select name="start-time">
 		<option value="13">1:00pm</option>
 		<option value="14">2:00pm</option>
 		<option value="15">3:00pm</option>
 		</select>
-	Type:<select name="apt-type">
+	<br>Type:<select name="apt-type">
                 <option value="P">Physical Exam</option>
                 <option value="F">Follow-Up</option>
                 <option value="R">Regular</option>
@@ -180,7 +183,9 @@ _END;
 	if($_SESSION['type']=="doctor"){
 		//doctor's have their own user account for the calendar
 		//this account mimics their ehis user account
-       		echo "<form action=\"/cs3773/calendar/index.php\" method=\"post\">";
+		echo "<br>If you need to reschedual an appointment then please use the calendar function! Thank You<br>";
+		echo "If you need to cancel an appointment then please go to the appointment page below! <br>";
+       	echo "<form action=\"/cs3773/calendar/index.php\" method=\"post\">";
 	 	echo "<input name=\"action\" value=\"login\" type=\"hidden\">";
 		echo "<input name=\"submit\" value=\"CALENDAR!!!\" type=\"submit\">";
 	 	echo "<input name=\"username\" value=\"" . $_SESSION['user'] . "\" type=\"hidden\">";
@@ -189,7 +194,7 @@ _END;
       	}
  
 	if($_SESSION['type']=="patient"){
-	// neeed to make a list of prevously sched. appointments for this particular patient
+	
 	
 	//patients are able to sched. appointments but not see any calendars
 echo <<<_END
@@ -198,13 +203,19 @@ echo <<<_END
          Date (YYYY-MM-DD): <input type="text" class="form-date" name="start-date" id="start-date">
         <script type="text/javascript">$('#start-date').datepicker({dateFormat: "yy-mm-dd" });</script>
         Doctor: <select name="calendarid">
-                <option value="1">Dr.Garza</option>
-                <option value="2">Dr.Taylor</option>
+                <option value="1">Dr.Taylor</option>
+                <option value="2">Dr.Garza</option>
                 </select>
         Time: <select name="start-time">
-                <option value="13">1:00pm</option>
-                <option value="14">2:00pm</option>
-                <option value="15">3:00pm</option>
+				<option value="09">09:00am</option>
+				<option value="10">10:00am</option>
+				<option value="11">11:00am</option>
+				<option value="12">12:00pm</option>
+				<option value="13">1:00pm</option>
+				<option value="14">2:00pm</option>
+				<option value="15">3:00pm</option>
+				<option value="16">4:00pm</option>
+				<option value="17">5:00pm</option>
                 </select>
         Type:<select name="apt-type">
                 <option value="P">Physical Exam</option>
