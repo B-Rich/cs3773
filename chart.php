@@ -50,6 +50,11 @@ else{
    echo "<a href='pastlog.php?cid=$cid'>Previous Appointments</a><br>";
    echo "<a href='medHistory.php?cid=$cid'>Medical History</a><br>";
    echo "<a href='diagnosis.php?cid=$cid'>Enter Diagnosis / Treatment Plan</a><br>";
+   echo "<a href='prescription.php?cid=$cid'>Write Prescription</a><br>";
+   echo "<a href='viewprescriptions.php?cid=$cid'>View Prescriptions</a><br>";
+   echo "<a href='testorder.php?cid=$cid'>Create Test Order</a><br>";
+   echo "<a href='viewtestorders.php?cid=$cid'>View Test Orders</a><br>";
+   echo "<a href='treatmentsgiven.php?cid=$cid'>Enter Treatments Given</a><br>";
 }
 ?>
 

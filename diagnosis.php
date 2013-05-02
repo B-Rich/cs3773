@@ -38,7 +38,6 @@ if ($result == false || mysqli_num_rows($result) == 0){
    }
 }
 else{
-
    $row = mysqli_fetch_array($result);
    $diagnosis= formatFromDB($row[0]);
    $tplan = formatFromDB($row[1]);
@@ -46,13 +45,13 @@ else{
 /* print diagnosis form */
 echo
    "
-   <form action='diagnosis.php?patient=$patient&cid=$cid' method='POST'>
+   <form action='diagnosis.php?cid=$cid' method='POST'>
    Enter Diagnosis:<br>
    <textarea name = 'diagnosis' rows='4' cols='50'>$diagnosis</textarea><br>
-   <input type = 'submit' value = 'Submit' name = 'submit'>
+   <input type = 'submit' value = 'Submit' name = 'submit1'>
 </form>";
  
-   if (isset($_POST['submit'])){
+   if (isset($_POST['submit1'])){
  
       $diagnosis = $_POST['diagnosis'];
 
@@ -67,21 +66,20 @@ echo
       if (mysqli_stmt_affected_rows($stmt) == 0){
          echo "Error entering diagnosis<br>".mysql_error()."<br>";
       }
-      
       /* reload page */
-      header("Location: log.php?patient=$patient");
+      header('Location: '.$_SERVER['REQUEST_URI']);
    }
 
 /* print treatmentplan form */
 echo
    "
-   <form action='treatmentplan.php?patient=$patient&cid=$cid' method='POST'>
+   <form action='diagnosis.php?cid=$cid' method='POST'>
    Enter Diagnosis:<br>
-   <textarea name = 'treatmentplan' rows='4' cols='50'>$treatmentplan</textarea><br>
-   <input type = 'submit' value = 'Submit' name = 'submit'>
+   <textarea name = 'treatmentplan' rows='4' cols='50'>$tplan</textarea><br>
+   <input type = 'submit' value = 'Submit' name = 'submit2'>
 </form>";
  
-   if (isset($_POST['submit'])){
+   if (isset($_POST['submit2'])){
  
       $treatmentplan = $_POST['treatmentplan'];
 
@@ -98,6 +96,6 @@ echo
       }
       
       /* reload page */
-      //header("Location: log.php?patient=$patient");
+      header('Location: '.$_SERVER['REQUEST_URI']);
    }
 ?>
