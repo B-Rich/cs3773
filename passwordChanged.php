@@ -105,7 +105,7 @@ $user = $_SESSION['user'];
 $oldpassword = $_POST['currentpassword'];
 $newpassword = $_POST['newpassword'];
 $newpassword2 = $_POST['newpassword2'];
-$result = mysqli_query($conn, "SELECT `password` FROM `User` WHERE username='$user'");
+$result = mysqli_query($conn, "SELECT `password` FROM `Member` WHERE username='$user'");
 $row = mysqli_fetch_assoc($result);
 $currPass = $row['password'];
 
@@ -117,8 +117,8 @@ if($newpassword == $newpassword2){
 		echo "The password must be at least 8 characters and have a mimimum of 1 uppercase letter, 1 number and 1 special character.";
 	  }
 	  else{
-		mysqli_query($conn,"UPDATE `User` SET password='$newpassword' WHERE username='$user'");
-		mysqli_query($conn,"UPDATE `User` SET temppassword='No' WHERE username='$user'");	
+		mysqli_query($conn,"UPDATE `Member` SET password='$newpassword' WHERE username='$user'");
+		mysqli_query($conn,"UPDATE `Member` SET temppassword='No' WHERE username='$user'");	
 		echo "<span style=color:green>Password changed successfully.</span> <br/><br/>";
 		echo "<a href=http://ehisproject.dyndns.org/cs3773/members.php><< back to main menu </a>";
 	  }
@@ -129,7 +129,7 @@ if($newpassword == $newpassword2){
 }
 else{
 	echo "New Passwords do not match.";
-        echo "<a href=http://ehisproject.dyndns.org/cs3773/changepassword.php><< go back</a>";
+        echo "<a href=changepassword.php><< go back</a>";
 }
 ?>
 

@@ -31,30 +31,27 @@ if(!isset($_SESSION['user'])){
 <?php
 
 	// connect to the DB:
-	$conn = connect_db();
-	//get patient's first and last
-        if($_SESSION['user']=="patient"){
-                //if patient get their name from their user name
-                $res=mysqli_query($conn,"SELECT cid FROM `Member` WHERE username='".$_SESSION['user']."'");
-                $row=mysqli_fetch_array($res);
-		$cid=$row[0];
-        }
- 
+	$conn = connect_db(); 
 	if(isset($_POST['setApt'])){
 
 		$startDate = $_POST['start-date'];
    		$startTime = $_POST['start-time'];
    		$aType = $_POST['apt-type'];//appointment type
    		$calendarid = $_POST['calendarid'];//which/who's calendar
+		$cid = $_POST['cid'];//member cid	
 		$fname;
    		$lname;
 		//TO DO!
 		//check to make sure that the block of time that they are try to schedual is 
 		//actually free for that particular doctor
-		//it'll be a receptionist they will get patient name from drop down menu
-		if(isset($_POST['cid'])){
-			$cid=$_POST['cid'];//member cid
+		//get patient's first and last
+		if($_SESSION['user']=="patient"){
+			//if patient get their name from their user name
+			$res=mysqli_query($conn,"SELECT cid FROM `Member` WHERE username='".$_SESSION['user']."'");
+			$row=mysqli_fetch_array($res);
+			$cid=$row[0];
 		}
+		//otherwise it'll be a receptionist they will get patient name from drop down menu
 		$res=mysqli_query($conn,"SELECT fname, lname FROM `Personal_Info` WHERE cid='".$cid."'");
 		$row=mysqli_fetch_array($res);
 		$fname=$row[0];
@@ -189,9 +186,6 @@ _END;
       	}
  
 	if($_SESSION['type']=="patient"){
-	// neeed to make a list of prevously sched. appointments for this particular patient
-	
-	//patients are able to sched. appointments but not see any calendars
 echo <<<_END
         <form action="./members.php" method="POST">
         <th>Schedual Next Appointment?:</th>
