@@ -13,7 +13,7 @@ $type = $_SESSION['type'];
 $cid = $_GET['cid'];
 
 /* if user doesn't have permission to view this page, redirect to home */
-if ($type != 'doctor'){
+if ($type != 'doctor' && $type != 'nurse'){
    header("Location: members.php");
 }
 /* make database connection */

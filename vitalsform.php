@@ -11,6 +11,10 @@ if(!isset($_SESSION['user'])){
    header("Location: login.php");
 }
 
+if ($type != 'doctor' && $type != 'nurse'){
+   header("Location: members.php");
+}
+
 $user = $_SESSION['user'];
 $type = $_SESSION['type'];
 $cid= $_GET['cid'];

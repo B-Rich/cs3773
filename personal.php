@@ -15,10 +15,6 @@ $user = $_SESSION['user'];
 $type = $_SESSION['type'];
 $cid = $_GET['cid'];
 
-/* reset credentials */
-if ($type != 'doctor' && $type != 'nurse'){
-   header("Location: members.php");
-}
 $conn = connect_db();
 
 /* get current personal information */

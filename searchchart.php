@@ -10,10 +10,6 @@
       header("Location: login.php");
    } 
    // user does not have permission to view page
-   if(!($_SESSION['type'] == 'doctor' || $_SESSION['type'] == 'nurse')){
-      echo "Permission denied!";
-      die;
-   } 
    //connect to database
    $conn = connect_db();
 ?>

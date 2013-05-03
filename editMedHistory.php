@@ -16,6 +16,10 @@ $type = $_SESSION['type'];
 $cid= $_GET['cid'];
 $conn = connect_db();
 
+if ($type != 'doctor' && $type != 'nurse'){
+   header("Location: members.php");
+}
+
 /* Get and display basic patient information */
 $query = "select fname, minit, lname
           from Personal_Info
